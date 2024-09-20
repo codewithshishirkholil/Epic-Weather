@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Wather Update</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://openweathermap.org/img/wn/02d@2x.png"
+      type="image/x-icon"
+    />
+    <!-- <script
+      src="https://kit.fontawesome.com/f2f105c995.js"
+      crossorigin="anonymous"
+    ></script> -->
+    <!-- Tailwind CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.24.2/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+     .body-of {
+  position: relative;
+  background-color: #111515;
+  height: 90vh;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  overflow: hidden; /* Ensures overlay fits within the container */
+}
+
+/* Create the overlay */
+.body-of::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url(https://images.pexels.com/photos/125510/pexels-photo-125510.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1) no-repeat center center;
+  background-size: cover;
+  opacity: 0.2;  /*50% opacity */
+  z-index: 1;
+}
+
+/* Ensure content stays on top of the overlay */
+.body-of * {
+  position: relative;
+  z-index: 2;
+}
+    </style>
+  </head>
+
+  <body>
+    <div class="body-of text-center text-white mt-[-20]">
+      
+      <input
+      id="input-field"
+        type="text"
+        placeholder="Type your city name"
+        class="lg:w-3/12 w-4/6 px-4 py-2 mt-20 text-black rounded-l"
+      />
+      <button
+      id="button"
+        class="px-4 py-2 mt-20 bg-blue-700 hover:bg-blue-900 rounded-r"
+        style="margin-left: -6px"
+      >
+        Search
+      </button>
+
+      <img
+        class="mx-auto mt-10"
+        src="https://openweathermap.org/img/wn/02d@2x.png"
+        alt=""
+      />
+      <h1 class="lg:text-5xl text-3xl font-semibold mt-4" id="city">Name Of Your City</h1>
+      <h3 class=" mt-4"><span class="lg:text-4xl text-2xl font-semibold" id="wather"></h3>
+      <h1 class="lg:text-3xl text-xl font-semibold mt-4" id="wather-setuation"></h1>
+    </div>
+
+    <footer class="footer  items-center p-6 px-10 bg-neutral text-neutral-content">
+      <div class="items-center justify-self-center lg:justify-self-start"> 
+        <p>Copyright © 2024 - <a href="https://www.facebook.com/ibrahim1999kholil/" class="text-white">Code With Kholil</a></p>
+      </div> 
+      <div class="grid-flow-col gap-4 md:place-self-center md:justify-self-end justify-self-center ">
+        <a class="bg-gray-900 rounded-full size-10 p-2 " href="https://x.com/shishirkholil"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg></svg>
+        </a> 
+        <a  class="bg-gray-900 rounded-full size-10 p-2 "  href="https://www.linkedin.com/in/epic-shishir-8b7417205/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a  class="bg-gray-900 rounded-full size-10 p-2 " href="https://www.facebook.com/ibrahim1999kholil/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      </div>
+    </footer>
+
+    <script src="index.js"></script>
+  </body>
+</html>
