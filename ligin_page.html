@@ -11,6 +11,7 @@
     type="text/css"
   />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="singin.js" defer></script>
 </head>
 <body>
     <header class="py-4 bg-black sm:py-6" x-data="{expanded: false}">
@@ -91,14 +92,14 @@
                             <div>
                                 <label for="" class="sr-only"> Email address </label>
                                 <div>
-                                    <input type="email" name="" id="" placeholder="Email address" class="block w-full px-5 py-4 text-base text-white placeholder-gray-500 bg-black rounded-md border border-white focus:ring-1 ring-white"  />
+                                    <input type="email" name="" id="email" placeholder="Email address" class="block w-full px-5 py-4 text-base text-white placeholder-gray-500 bg-black rounded-md border border-white focus:ring-1 ring-white"  />
                                 </div>
                             </div>
     
                             <div>
                                 <label for="" class="sr-only"> Password </label>
                                 <div>
-                                    <input type="password" name="" id="" placeholder="Password"  class="block w-full px-5 py-4 text-base text-white placeholder-gray-500 bg-black rounded-md border border-white focus:ring-1 ring-white"  />
+                                    <input type="password" name="" id="password" placeholder="Password"  class="block w-full px-5 py-4 text-base text-white placeholder-gray-500 bg-black rounded-md border border-white focus:ring-1 ring-white"  />
                                 </div>
                             </div>
     
@@ -114,7 +115,7 @@
                             </div>
     
                             <div>
-                                <button type="button" class="inline-flex items-center justify-center w-full px-5 py-4 text-base text-black transition-all duration-200 bg-white border border-transparent rounded-md hover:opacity-80">Sign In</button>
+                                <button type="button" id="signin" class="inline-flex items-center justify-center w-full px-5 py-4 text-base text-black transition-all duration-200 bg-white border border-transparent rounded-md hover:opacity-80">Sign In</button>
                             </div>
                         </form>
     
@@ -128,7 +129,7 @@
                         </div>
     
                         <div class="mt-6">
-                            <button type="submit" class="relative inline-flex items-center justify-center w-full px-10 py-4 text-base font-normal text-white transition-all duration-200 bg-transparent border border-white rounded-md hover:bg-gray-900">
+                            <button type="submit" id="google-login" class="relative inline-flex items-center justify-center w-full px-10 py-4 text-base font-normal text-white transition-all duration-200 bg-transparent border border-white rounded-md hover:bg-gray-900">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-5">
                                     <img class="w-6 h-6 mr-6" src="https://landingfoliocom.imgix.net/store/collection/dusk/images/sign-up/2/google-logo.svg" alt="" />
                                 </div>
