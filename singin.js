@@ -35,7 +35,7 @@ signin.addEventListener("click", function (event) {
         .then((userCredential) => {
             const user = userCredential.user;
             // alert("Logged in successfully! Welcome back, " + user.email);
-            window.location.href = "index.html";
+            window.location.href = "home.html";
         })
         .catch((error) => {
             switch (error.code) {
@@ -66,7 +66,7 @@ googleLoginBtn.addEventListener("click", function (event) {
             const user = result.user;
             console.log("User signed in with Google: ", user.email);
             // Redirect or process user information
-            window.location.href = "index.html";
+            window.location.href = "home.html";
         })
         .catch((error) => {
             console.error("Google sign-in error: ", error.message);

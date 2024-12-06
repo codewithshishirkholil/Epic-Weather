@@ -1,259 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile - EpicWeather</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.24.2/dist/full.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore.js"></script>
+  <style>
+    :root {
+      --primary-color: #4a90e2;
+      --secondary-color: #f5f5f5;
+      --text-color: #333;
+      --border-radius: 8px;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    #profile-page {
+      position: relative;
+      max-width: 600px;
+      margin: 2rem auto;
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .back-arrow:hover {
+      color: #3a7bc8;
+    }
+
+    h1 {
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .profile-section {
+      margin-bottom: 1.5rem;
+    }
+
+    #profile-pic {
+      display: block;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1rem;
+      border: 3px solid var(--primary-color);
+      transition: var(--transition);
+    }
+
+    #profile-pic:hover {
+      transform: scale(1.05);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .file-upload-label {
+      display: block;
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 0.5rem;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .file-upload-label:hover {
+      background-color: #3a7bc8;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+    }
+
+    textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    #update-profile {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    #update-profile:hover {
+      background-color: #3a7bc8;
+    }
+
+    #logout {
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+    }
+
+    #logout:hover {
+      background-color: #e0e0e0;
+    }
+
+    #delete-account {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    #delete-account:hover {
+      background-color: #c0392b;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+  </style>
+   <script type="module" src="profile.js" defer></script>
 </head>
-
-<body class="bg-black text-white">
-    <header class="py-4 bg-black sm:py-6" x-data="{expanded: false}">
-        <div class="px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between">
-                <div class="shrink-0">
-                    <a href="/index.html" title="" class="flex">
-                        <img class="w-auto h-12" src="https://i.ibb.co.com/Jr0Hc66/Epic.png" alt="EpicWeather Logo" />
-                    </a>
-                </div>
-
-                <div class="flex md:hidden">
-                    <button type="button" class="text-white" @click="expanded = !expanded" :aria-expanded="expanded">
-                        <span x-show="!expanded" aria-hidden="true">
-                            <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                    d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </span>
-
-                        <span x-show="expanded" aria-hidden="true">
-                            <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </span>
-                    </button>
-                </div>
-
-                <nav class="hidden space-x-10 md:flex md:items-center md:justify-center lg:space-x-12">
-                    <a href="/contact.html" title=""
-                        class="text-base font-normal text-gray-400 transition-all duration-200 hover:text-white">
-                        Support </a>
-                </nav>
-
-                <div class="relative hidden md:justify-center md:items-center md:inline-flex group">
-                    <div
-                        class="absolute transition-all duration-200 rounded-full -inset-px bg-gradient-to-r from-cyan-500 to-purple-500 group-hover:shadow-lg group-hover:shadow-cyan-500/50">
-                    </div>
-                    <button id="logoutButton"
-                        class="relative inline-flex items-center justify-center px-6 py-2 text-base font-normal text-white bg-black border border-transparent rounded-full"
-                        role="button"> Log Out </button>
-                </div>
-            </div>
-
-            <nav x-show="expanded" x-collapse>
-                <div class="flex flex-col pt-8 pb-4 space-y-6">
-                    <a href="/contact.html" title=""
-                        class="text-base font-normal text-gray-400 transition-all duration-200 hover:text-white">
-                        Support </a>
-
-                    <div class="relative inline-flex items-center justify-center group">
-                        <div
-                            class="absolute transition-all duration-200 rounded-full -inset-px bg-gradient-to-r from-cyan-500 to-purple-500 group-hover:shadow-lg group-hover:shadow-cyan-500/50">
-                        </div>
-                        <button id="mobileLogoutButton"
-                            class="relative inline-flex items-center justify-center w-full px-6 py-2 text-base font-normal text-white bg-black border border-transparent rounded-full"
-                            role="button"> Log Out </button>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <section class="relative py-12 overflow-hidden bg-black sm:py-16 lg:py-20 xl:py-24">
-        <div class="absolute bottom-0 left-0 transform -translate-x-12 translate-y-80 lg:translate-x-0">
-            <svg class="blur-3xl filter" style="filter: blur(64px)" width="835" height="525" viewBox="0 0 835 525"
-                fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M215.676 295.092C107.631 187.047 -91.9978 228.999 50.4835 86.5174C192.965 -55.9639 705.222 -1.77906 813.267 106.266C921.312 214.311 584.231 335.302 441.75 477.783C299.268 620.265 323.722 403.137 215.676 295.092Z"
-                    fill="url(#paint0_linear_537_1369)" />
-                <defs>
-                    <linearGradient id="paint0_linear_537_1369" x1="861.287" y1="154.286" x2="295.051" y2="576.839"
-                        gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" style="stop-color: var(--color-cyan-500)" />
-                        <stop offset="100%" style="stop-color: var(--color-purple-500)" />
-                    </linearGradient>
-                </defs>
-            </svg>
-        </div>
-
-        <div class="absolute inset-0">
-            <img class="object-cover w-full h-full opacity-50"
-                src="https://landingfoliocom.imgix.net/store/collection/dusk/images/noise.png" alt="" />
-        </div>
-
-        <div class="relative px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-            <div class="flex justify-center items-center max-w-md mx-auto lg:max-w-2xl">
-                <div class="overflow-hidden bg-base-900 rounded-xl w-full">
-                    <div class="p-6 sm:py-8 sm:px-9">
-                        <h2 class="text-2xl font-normal text-white sm:text-3xl lg:text-4xl">Your Profile</h2>
-                        <p class="mt-4 text-lg font-normal text-gray-400">Manage your personal information</p>
-
-                        <form id="profileForm" class="mt-8 space-y-4">
-                            <div class="flex justify-center">
-                                <div class="relative">
-                                    <img id="userPhoto" src="https://via.placeholder.com/150" alt="Profile"
-                                        class="w-32 h-32 rounded-full object-cover" />
-                                    <label for="photoInput"
-                                        class="absolute bottom-0 right-0 bg-white text-black p-2 rounded-full cursor-pointer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                    </label>
-                                    <input id="photoInput" type="file" accept="image/*" class="hidden" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label for="nameInput" class="sr-only">Full Name</label>
-                                <input type="text" id="nameInput" placeholder="Full Name"
-                                    class="block w-full px-5 py-4 text-base text-white placeholder-gray-500 bg-black rounded-md border border-white focus:ring-1 ring-white" />
-                            </div>
-
-                            <div>
-                                <label for="emailInput" class="sr-only">Email address</label>
-                                <input type="email" id="emailInput" placeholder="Email address" readonly
-                                    class="block w-full px-5 py-4 text-base text-white placeholder-gray-500 bg-black rounded-md border border-white focus:ring-1 ring-white" />
-                            </div>
-
-                            <div>
-                                <label for="aboutInput" class="sr-only">About</label>
-                                <textarea id="aboutInput" placeholder="About you" rows="4"
-                                    class="block w-full px-5 py-4 text-base text-white placeholder-gray-500 bg-black rounded-md border border-white focus:ring-1 ring-white"></textarea>
-                            </div>
-
-                            <div>
-                                <button type="submit"
-                                    class="inline-flex items-center justify-center w-full px-5 py-4 text-base text-black transition-all duration-200 bg-white border border-transparent rounded-md hover:opacity-80">Update
-                                    Profile</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <script>
-        // Initialize Firebase (replace with your own config)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCjpXPPI_46ih71lsSJbBh57RlW9VWmxIA",
-            authDomain: "epicweather-9368c.firebaseapp.com",
-            projectId: "epicweather-9368c",
-            storageBucket: "epicweather-9368c.appspot.com",
-            messagingSenderId: "978250455035",
-            appId: "1:978250455035:web:800d355896ecfbf68c5d5e",
-            measurementId: "G-3RSBF7R5XF"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-
-        // DOM elements
-        const profileForm = document.getElementById('profileForm');
-        const nameInput = document.getElementById('nameInput');
-        const emailInput = document.getElementById('emailInput');
-        const aboutInput = document.getElementById('aboutInput');
-        const photoInput = document.getElementById('photoInput');
-        const userPhoto = document.getElementById('userPhoto');
-        const logoutButton = document.getElementById('logoutButton');
-        const mobileLogoutButton = document.getElementById('mobileLogoutButton');
-
-        // Check if user is logged in
-        auth.onAuthStateChanged(function (user) {
-            if (user) {
-                // User is signed in, load their profile
-                loadUserProfile(user);
-            } else {
-                // No user is signed in, redirect to login page
-                window.location.href = '/ligin_page.html';
-            }
-        });
-
-        // Load user profile
-        function loadUserProfile(user) {
-            emailInput.value = user.email;
-            nameInput.value = user.displayName;
-
-        }
-
-        // Handle form submission
-        profileForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const user = auth.currentUser;
-            if (user) {
-                const userRef = db.collection('users').doc(user.uid);
-                const updates = {
-                    name: nameInput.value,
-                    about: aboutInput.value
-                };
-
-                if (photoInput.files.length > 0) {
-                    const file = photoInput.files[0];
-                    const photoRef = storage.ref('user-photos/' + user.uid);
-                    await photoRef.put(file);
-                    const downloadURL = await photoRef.getDownloadURL();
-                    updates.photoURL = downloadURL;
-                    userPhoto.src = downloadURL;
-                }
-
-                userRef.update(updates).then(() => {
-                    alert('Profile updated successfully!');
-                }).catch((error) => {
-                    console.error("Error updating profile:", error);
-                    alert('Error updating profile. Please try again.');
-                });
-            }
-        });
-
-        // Handle photo change
-        photoInput.addEventListener('change', function (e) {
-            if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    userPhoto.src = e.target.result;
-                }
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-
-        // Handle logout
-        function handleLogout() {
-            auth.signOut().then(() => {
-                window.location.href = '/ligin_page.html';
-            }).catch((error) => {
-                console.error("Error signing out:", error);
-            });
-        }
-
-        logoutButton.addEventListener('click', handleLogout);
-        mobileLogoutButton.addEventListener('click', handleLogout);
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<body>
+  <div id="profile-page" class="fade-in">
+    <a href="javascript:history.back()" class="back-arrow" aria-label="Go back">←</a>
+    <h1>User Profile</h1>
+    <div class="profile-section">
+      <img id="profile-pic" src="default.png" alt="Profile Picture">
+      <label for="upload-pic" class="file-upload-label">Change Profile Picture</label>
+      <input type="file" id="upload-pic" accept="image/*">
+    </div>
+    <div class="profile-section">
+      <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
+      <input type="text" id="edit-name" placeholder="Update name">
+    </div>
+    <div class="profile-section">
+      <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
+    </div>
+    <div class="profile-section">
+      <p><strong>About:</strong></p>
+      <textarea id="edit-about" placeholder="Write about yourself"></textarea>
+    </div>
+    <button id="update-profile">Update Profile</button>
+    <button id="logout">Logout</button>
+    <button id="delete-account">Delete Account</button>
+  </div>
 </body>
-
 </html>
